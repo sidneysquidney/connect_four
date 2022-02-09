@@ -10,7 +10,7 @@ class Player:
         
 class Human(Player):
     # human class that asks for user input of valid moves (0-6), then updates the board
-    def make_move(self, grid):
+    def make_move(self, grid: Grid):
         valid_moves = grid.valid_moves()
         while True:
             move = input(f'Make a move within {valid_moves}')
@@ -18,6 +18,7 @@ class Human(Player):
                 return grid.update(self.token, int(move))
             
 class AI(Player):
+    
     def score1(self, grid):
     # scores lines in play 
         lines = ListFlatten(get_lines(grid)).result
