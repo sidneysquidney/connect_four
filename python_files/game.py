@@ -1,7 +1,7 @@
 import numpy as np
 
-from grid import Grid, GridRef, Piece, ListFlatten, WinState, Point, get_lines, get_lines_from_position
-from player import Player, Human, AI, RandomAI
+from grid import Grid, Piece
+from player import Player, Human, AI, RandomAI, MiniMaxAI
 
 class Game:
     char = {
@@ -34,12 +34,11 @@ class Game:
             state = self.current_player.make_move(self.grid)
             if state.is_ended:
                 self.print_grid()
-                print(len(self.current_player.score1(self.grid.grid)))
                 print(state.winner)
                 return state.winner
             self.change_player()
             
-game = Game(RandomAI(Piece.RED), RandomAI(Piece.YELLOW))
+game = Game(MiniMaxAI(Piece.RED), Human(Piece.YELLOW))
 game.play()
             
-    
+# when game gets to end (3 available moves left - and minimax depth == 4, what then...)

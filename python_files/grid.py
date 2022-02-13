@@ -2,6 +2,8 @@ import numpy as np
 from enum import Enum
 from collections import namedtuple
 
+from reference import GridRef
+
 class Piece(Enum):
     EMPTY = ' '
     RED = 'R'
@@ -9,81 +11,32 @@ class Piece(Enum):
     
 WinState = namedtuple('WinState', ['is_ended', 'winner'])
 Point = namedtuple('Point', ['r', 'c'])
+PlayerState = namedtuple('PlayerState', ['max', 'score', 'print'])
 
-n_c = 7
-n_r = 6
-to_win = 4
-
-class ListFlatten:
-    def __init__(self, group):
-        self.result = []
-        self.backtrack(group)
-        
-    def backtrack(self, group):
-        if type(group[0]) != list:
-            self.result.append(group)
-        else:
-            for item in group:
-                self.backtrack(item)
-
-def get_lines(grid):
-    # returns a list of lines (that have a length greater than 4) from the grid - rows, columns, both diagonals
-    return [[list(x) for x in grid], 
-            [list(grid[:,c]) for c in range(n_c)], 
-            [list(np.diag(grid, x)) for x in range(-2, 4)], 
-            [list(np.diag(np.fliplr(grid), x)) for x in range(-2, 4)]]
-
-def get_lines_from_position(x, y, grid):
-#   gets the lines from coordinates[x,y]
-    l1, l2, l3, l4 = grid_reference.lines_dict[grid_reference.number_grid[x,y]]
-    lines = []
-    lines.append(grid[l1,:])
-    if isinstance(l2, int):
-        lines.append(grid[:, l2])
-    if isinstance(l3, int):
-        lines.append(np.diag(grid, l3))
-    if isinstance(l4, int):
-        lines.append(np.diag(np.fliplr(grid), l4))
-    return lines
-
-class GridRef:
-    # a Grid Reference class to locate lines from a specific coordinate
-    def __init__(self):
-        self.number_grid = np.arange(n_c * n_r).reshape(n_r, n_c)
-        self.lines_dict = {n: [None] * 4 for n in range(n_c * n_r)}
-        self.apply_lines_to_lines_dict()
-        
-    def apply_lines_to_lines_dict(self):
-        groups = get_lines(self.number_grid)
-        for i in range(n_c * n_r):
-            for r in range(7):
-                for ind in range(4):
-                    if r == 6:
-                        if i in groups[1][r]:
-                            self.lines_dict[i][1] = r
-                    elif ind < 2:
-                        if i in groups[ind][r]:
-                            self.lines_dict[i][ind] = r
-                    else:
-                        if i in groups[ind][r]:
-                            self.lines_dict[i][ind] = r - 2
-                            
-grid_reference = GridRef()
+NR, NC, TW = 6, 7, 4
+P1 = PlayerState(True, 1, '⚈')
+P2 = PlayerState(False, -1, '◯')
+P0 = PlayerState(None, 0, '_')
+PDICT = {Piece.RED: P1, Piece.YELLOW: P2, Piece.EMPTY: P0}
+GRIDREF = GridRef(NR, NC, TW)
 
 class Grid:
-    # main grid class
+    n_c = 7
+    n_r = 6
+    to_win = 4
+    
     def __init__(self): 
-        self.grid = np.full((6,7), Piece.EMPTY, dtype = Piece)
-        self.space = np.zeros(7, dtype = int)
+        self.grid = np.full((NR,NC), Piece.EMPTY, dtype = Piece)
+        self.space = np.zeros(NC, dtype = int)
         self.last_move = Point(0,0)
         
     def valid_moves(self) -> np.ndarray:
     # returns an array of indexes that have space
-        return np.nonzero(self.space < 6)[0] # type: ignore
+        return np.nonzero(self.space < NR)[0] # type: ignore
 
     def make_move(self, player: Piece, column: int):
     # inputs the player counter into the next available space in the column
-        if self.space[column] == 6:
+        if self.space[column] == NR:
             raise ValueError(f'Column {column} is full')
         else:
             self.grid[self.space[column], column] = player
@@ -97,7 +50,7 @@ class Grid:
     
     def get_winner(self, player: Piece) -> bool:
     # searches through the lines at the coordinates of the last move. if 4 in a row found returns True
-        lines = get_lines_from_position(self.last_move.x, self.last_move.y, self.grid)
+        lines = GRIDREF.get_lines_from_position(self.last_move.r, self.last_move.c, self.grid)
         for line in lines:
             count = 1
             for i in range(1, len(line)):
@@ -105,7 +58,7 @@ class Grid:
                     count += 1
                 else:
                     count = 1
-                if count == 4:
+                if count == TW:
                     if line[i] == player:
                         return True
         return False
@@ -118,3 +71,9 @@ class Grid:
             return WinState(True, Piece.EMPTY)
         else:
             return WinState(False, Piece.EMPTY)
+        
+def print_grid(grid: np.ndarray) -> str:
+    # flips grid upside down and prints grid
+    print()
+    for line in np.flipud(grid):
+        print('|' + ' '.join([PDICT[p].print for p in line]) + '|')

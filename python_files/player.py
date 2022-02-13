@@ -1,7 +1,8 @@
 import numpy as np
 import random
 
-from grid import Grid, GridRef, Piece, ListFlatten, WinState, Point, get_lines, get_lines_from_position
+from grid import Grid, Piece, WinState
+from minimax import MiniMax
 
 class Player:
     # player class that parents Human and AI
@@ -10,7 +11,7 @@ class Player:
         
 class Human(Player):
     # human class that asks for user input of valid moves (0-6), then updates the board
-    def make_move(self, grid: Grid):
+    def make_move(self, grid: Grid) -> WinState:
         valid_moves = grid.valid_moves()
         while True:
             move = input(f'Make a move within {valid_moves}')
@@ -18,22 +19,20 @@ class Human(Player):
                 return grid.update(self.token, int(move))
             
 class AI(Player):
-    
-    def score1(self, grid):
-    # scores lines in play 
-        lines = ListFlatten(get_lines(grid)).result
-        score = 0
-        for line in lines:
-            pass
+    def score1(self, grid: Grid):
+        pass
             
-            
-        
-
 class RandomAI(AI):
     # random ai that makes a random move out of the available valid moves
-    def make_move(self, grid):
+    def make_move(self, grid: Grid) -> WinState:
         valid_moves = grid.valid_moves()
         move = random.choice(valid_moves)
+        return grid.update(self.token, move)
+    
+class MiniMaxAI(AI):
+    def make_move(self, grid: Grid) -> WinState:
+        m = MiniMax(grid, self.token, 4)
+        move = m.minimax_move()
         return grid.update(self.token, move)
     
 class SidsAI(AI):
@@ -42,3 +41,8 @@ class SidsAI(AI):
         pass
 
 # GridChild class - carries over grid, space, last move, level, 
+
+g1 = Grid()
+m = MiniMax(g1, Piece.RED, 4)
+
+print(m.minimax_move())

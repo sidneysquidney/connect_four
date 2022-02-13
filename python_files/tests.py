@@ -1,7 +1,7 @@
 import numpy as np
 import unittest
 
-from grid import Grid, GridRef, Piece, WinState, Point, get_lines, get_lines_from_position
+from grid import Grid, GridRef, Piece, WinState, Point
 from test_variables import g1, g2, g3, g4, g5, g
 
 class TestGrid(unittest.TestCase):

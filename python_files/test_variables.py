@@ -1,6 +1,6 @@
 import numpy as np
 
-from grid import Grid, GridRef, Piece, WinState, Point, get_lines, get_lines_from_position
+from grid import Grid, GridRef, Piece, WinState, Point
 
 # from game import TestGrid
 
@@ -38,8 +38,8 @@ char = {
         Piece.YELLOW : '◯',
         Piece.EMPTY : '_'
     }
-def print_grid(grid):
-    for line in np.flipud(grid):
-        print('|' + ' '.join([char[p] for p in line]) + '|')
+# def print_grid(grid):
+#     for line in np.flipud(grid):
+#         print('|' + ' '.join([char[p] for p in line]) + '|')
         
-print_grid(g5.grid)
+# print_grid(g5.grid)
