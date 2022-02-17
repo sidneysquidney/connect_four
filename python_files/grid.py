@@ -1,3 +1,4 @@
+from typing import Tuple
 import numpy as np
 from enum import Enum
 from collections import namedtuple
@@ -18,12 +19,10 @@ P1 = PlayerState(True, 1, '⚈')
 P2 = PlayerState(False, -1, '◯')
 P0 = PlayerState(None, 0, '_')
 PDICT = {Piece.RED: P1, Piece.YELLOW: P2, Piece.EMPTY: P0}
+OPDICT = {'⚈': Piece.RED, '◯': Piece.YELLOW, '_': Piece.EMPTY}
 GRIDREF = GridRef(NR, NC, TW)
 
 class Grid:
-    n_c = 7
-    n_r = 6
-    to_win = 4
     
     def __init__(self): 
         self.grid = np.full((NR,NC), Piece.EMPTY, dtype = Piece)
@@ -77,3 +76,15 @@ def print_grid(grid: np.ndarray) -> str:
     print()
     for line in np.flipud(grid):
         print('|' + ' '.join([PDICT[p].print for p in line]) + '|')
+
+def string_to_grid(s: str) -> Tuple[np.ndarray]:
+    # turns string representation of a grid into a useable grid
+    grid = np.array(np.flipud([[OPDICT[x] for x in l if OPDICT.get(x)] for l in s.split('\n')]))
+    space = []
+    for col in range(NC):
+        c = grid[:,col]
+        if np.nonzero(c == Piece.EMPTY)[0].size > 0:
+            space.append(np.nonzero(c == Piece.EMPTY)[0][0])
+        else:
+            space.append(NR)
+    return grid, np.array(space)

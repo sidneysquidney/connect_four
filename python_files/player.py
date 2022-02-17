@@ -1,8 +1,7 @@
-import numpy as np
 import random
 
 from grid import Grid, Piece, WinState
-from minimax import MiniMax
+from minimax import MiniMax, MiniMaxP
 
 class Player:
     # player class that parents Human and AI
@@ -19,8 +18,7 @@ class Human(Player):
                 return grid.update(self.token, int(move))
             
 class AI(Player):
-    def score1(self, grid: Grid):
-        pass
+    pass
             
 class RandomAI(AI):
     # random ai that makes a random move out of the available valid moves
@@ -29,20 +27,14 @@ class RandomAI(AI):
         move = random.choice(valid_moves)
         return grid.update(self.token, move)
     
-class MiniMaxAI(AI):
+class MiniMax0AI(AI):
     def make_move(self, grid: Grid) -> WinState:
         m = MiniMax(grid, self.token, 4)
         move = m.minimax_move()
         return grid.update(self.token, move)
     
-class SidsAI(AI):
-    # sids original AI
-    def make_move(self, grid):
-        pass
-
-# GridChild class - carries over grid, space, last move, level, 
-
-g1 = Grid()
-m = MiniMax(g1, Piece.RED, 4)
-
-print(m.minimax_move())
+class MiniMax1AI(AI):
+    def make_move(self, grid: Grid) -> WinState:
+        m = MiniMaxP(grid, self.token, 4)
+        move = m.minimax_move()
+        return grid.update(self.token, move)

@@ -72,5 +72,3 @@ class GridRef:
                 [list(grid[:,c]) for c in self.all_lines['c']],
                 [list(np.diag(grid, dd)) for dd in self.all_lines['dd']],
                 [list(np.diag(np.flipud(grid), du)) for du in self.all_lines['du']]]).result   
-        
-        

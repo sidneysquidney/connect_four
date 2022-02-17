@@ -1,7 +1,7 @@
 import numpy as np
 
 from grid import Grid, Piece
-from player import Player, Human, AI, RandomAI, MiniMaxAI
+from player import Player, Human, RandomAI, MiniMax1AI, MiniMax0AI
 
 class Game:
     char = {
@@ -31,6 +31,7 @@ class Game:
         # plays the game with 2 players until the game has ended - win/draw
         while True:
             self.print_grid()
+            # print(self.grid.grid)
             state = self.current_player.make_move(self.grid)
             if state.is_ended:
                 self.print_grid()
@@ -38,7 +39,7 @@ class Game:
                 return state.winner
             self.change_player()
             
-game = Game(MiniMaxAI(Piece.RED), Human(Piece.YELLOW))
+game = Game(MiniMax1AI(Piece.RED), MiniMax0AI(Piece.YELLOW))
 game.play()
             
 # when game gets to end (3 available moves left - and minimax depth == 4, what then...)
