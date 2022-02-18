@@ -66,7 +66,7 @@ class Grid:
         # returns a WinState tuple [0] is a bool telling 'is_ended', [1] tells the winner/ empty
         if self.get_winner(player):
             return WinState(True, player)
-        elif not any(self.valid_moves()):
+        elif len(self.valid_moves()) == 0:
             return WinState(True, Piece.EMPTY)
         else:
             return WinState(False, Piece.EMPTY)

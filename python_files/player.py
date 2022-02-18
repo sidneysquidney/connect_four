@@ -1,7 +1,7 @@
 import random
 
 from grid import Grid, Piece, WinState
-from minimax import MiniMax, MiniMaxP
+from minimax import MiniMax, MiniMaxP, MiniMaxN
 
 class Player:
     # player class that parents Human and AI
@@ -29,12 +29,60 @@ class RandomAI(AI):
     
 class MiniMax0AI(AI):
     def make_move(self, grid: Grid) -> WinState:
-        m = MiniMax(grid, self.token, 4)
+        m = MiniMaxN(grid, self.token, 4)
         move = m.minimax_move()
         return grid.update(self.token, move)
     
 class MiniMax1AI(AI):
     def make_move(self, grid: Grid) -> WinState:
+        m = MiniMax(grid, self.token, 4)
+        move = m.minimax_move()
+        return grid.update(self.token, move)
+    
+class MiniMax2AI(AI):
+    def make_move(self, grid: Grid) -> WinState:
         m = MiniMaxP(grid, self.token, 4)
+        move = m.minimax_move()
+        return grid.update(self.token, move)
+    
+class MiniMax3AI(AI):
+    def make_move(self, grid: Grid) -> WinState:
+        m = MiniMax(grid, self.token, 6)
+        move = m.minimax_move()
+        return grid.update(self.token, move)
+    
+class MiniMax4AI(AI):
+    def make_move(self, grid: Grid) -> WinState:
+        m = MiniMaxP(grid, self.token, 6)
+        move = m.minimax_move()
+        return grid.update(self.token, move)
+    
+class MiniMax5AI(AI):
+    def make_move(self, grid: Grid) -> WinState:
+        m = MiniMax(grid, self.token, 8)
+        move = m.minimax_move()
+        return grid.update(self.token, move)
+    
+class MiniMax6AI(AI):
+    def make_move(self, grid: Grid) -> WinState:
+        m = MiniMaxP(grid, self.token, 8)
+        move = m.minimax_move()
+        return grid.update(self.token, move)
+    
+class EasyAI(AI):
+    def make_move(self, grid: Grid) -> WinState:
+        m = MiniMaxP(grid, self.token, 2)
+        move = m.minimax_move()
+        return grid.update(self.token, move)
+    
+class MediumAI(AI):
+    def make_move(self, grid: Grid) -> WinState:
+        m = MiniMax(grid, self.token, 4)
+        move = m.minimax_move()
+        return grid.update(self.token, move)
+    
+class HardAI(AI):
+    def make_move(self, grid: Grid) -> WinState:
+        m = MiniMaxP(grid, self.token, 8)
         move = m.minimax_move()
         return grid.update(self.token, move)
