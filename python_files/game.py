@@ -42,7 +42,7 @@ class Game:
 
 class_dict = {0: MiniMax0AI, 1: MiniMax1AI, 2: MiniMax2AI, 3: MiniMax3AI, 4: MiniMax4AI, 5: MiniMax5AI, 6: MiniMax6AI}
 score_dict = {n: [] for n in range(7)}
-players = [1,2]
+players = [1,2,3,4,5,6]
 
 
 # for p1 in players:

@@ -23,7 +23,6 @@ OPDICT = {'⚈': Piece.RED, '◯': Piece.YELLOW, '_': Piece.EMPTY}
 GRIDREF = GridRef(NR, NC, TW)
 
 class Grid:
-    
     def __init__(self): 
         self.grid = np.full((NR,NC), Piece.EMPTY, dtype = Piece)
         self.space = np.zeros(NC, dtype = int)
