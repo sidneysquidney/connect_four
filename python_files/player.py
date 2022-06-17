@@ -13,7 +13,8 @@ class Human(Player):
     def make_move(self, grid: Grid) -> WinState:
         valid_moves = grid.valid_moves()
         while True:
-            move = input(f'Make a move within {valid_moves}')
+            # move = input(f'Make a move within {valid_moves}')
+            move = input()
             if move.isdigit() and int(move) in valid_moves:
                 return grid.update(self.token, int(move))
             
@@ -69,20 +70,20 @@ class MiniMax6AI(AI):
         move = m.minimax_move()
         return grid.update(self.token, move)
     
-class EasyAI(AI):
+class MediumAI(AI):
     def make_move(self, grid: Grid) -> WinState:
         m = MiniMaxP(grid, self.token, 2)
         move = m.minimax_move()
         return grid.update(self.token, move)
     
-class MediumAI(AI):
+class HardAI(AI):
     def make_move(self, grid: Grid) -> WinState:
-        m = MiniMax(grid, self.token, 4)
+        m = MiniMax(grid, self.token, 6)
         move = m.minimax_move()
         return grid.update(self.token, move)
     
-class HardAI(AI):
-    def make_move(self, grid: Grid) -> WinState:
-        m = MiniMaxP(grid, self.token, 8)
-        move = m.minimax_move()
-        return grid.update(self.token, move)
+# class HardAI(AI):
+#     def make_move(self, grid: Grid) -> WinState:
+#         m = MiniMaxP(grid, self.token, 8)
+#         move = m.minimax_move()
+#         return grid.update(self.token, move)

@@ -87,3 +87,6 @@ def string_to_grid(s: str) -> Tuple[np.ndarray]:
         else:
             space.append(NR)
     return grid, np.array(space)
+
+# g = Grid()
+# print(g.valid_moves())
